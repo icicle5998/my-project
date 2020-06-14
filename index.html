@@ -6,8 +6,23 @@
 </head>
 <body>
 <h1>Hello Universe</h1>
+<button onclick="notifyMe()">Notify m1!</button>
 <script>
     console.log('this is here, and there');
+    function notifyMe() {
+        if (!('Notification' in window)) {
+            alert('This browser does not support desktop notification');
+        } else if (Notification.permission === 'granted') {
+            let notification = new Notification("Hi there!");
+        } else if (Notification.permission !== 'denied') {
+            Notification.requestPermission().then(permission => {
+                if (permission === 'granted') {
+                    let notification = new Notification("Hi there!");
+                }
+            });
+        }
+    }
+
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('/my-project/sw.js').then(registration => {
